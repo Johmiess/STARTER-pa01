@@ -2,7 +2,6 @@
 // Author: John Yang
 // Implementation of the classes defined in card_list.h
 #include "card_list.h"
-
 card card_list::iterator::operator*(){
     return this -> current -> data; 
 }
@@ -101,82 +100,85 @@ card_list::iterator card_list::rend(){
 }
 
 void card_list::remove(card rem_card){
-    Node* curr = root;
-
-    while(curr != nullptr){
-        if(rem_card == curr->data){
-            break;
-        }
-        else if(rem_card < curr->data){
-            curr = curr->left;
-        }
-        else {
-            curr = curr->right;
-        }
-    }
-
-    if(curr == nullptr){
+    //case 0 dne
+    // case root node
+    // case 1 leaf node? we want to just remove that and its fine
+    // case 2 we have a parent and child node? so the we just connect the child to its parent right.
+    // case 3 we have a parent and 2 child. 
+    // We find predcessor. copy predcessor value to target. 
+    if (!contains(rem_card)){
         return;
     }
-
-    if(curr->left && curr->right){
-        Node* successor = curr->right;
-        while(successor->left){
-            successor = successor->left;
+    Node* curr = root;
+    while(curr -> data != rem_card){
+        if(curr -> data > rem_card){
+            curr = curr -> left;
         }
-        if(successor == curr->right){
-            successor->left = curr->left;
-            curr->left->parent = successor;
-            successor->parent = curr->parent;
-
-        } else {
-            successor->parent->left = successor->right;
-            
-            if(successor->right){
-                successor->right->parent = successor->parent;
+        if(curr -> data < rem_card){
+            curr = curr -> right;
+        }
+    }
+    if(curr -> left && curr -> right){
+        auto it = iterator(curr);
+        --it;
+        Node* prede = it.current;
+        curr -> data = prede -> data;
+        curr = prede;
+    }
+    if(!(curr -> left) && !(curr -> right)){
+        Node* del = curr;
+        if(curr == root){
+            root = nullptr;
+        } 
+        if(curr -> parent){
+            if(curr -> parent -> right == curr){
+                curr -> parent -> right = nullptr;
             }
-            
-            successor->left = curr->left;
-            successor->right = curr->right;
-            successor->parent = curr->parent;
-
-            curr->left->parent = successor;
-            curr->right->parent = successor;
+            else{
+                curr -> parent -> left = nullptr;
+            }
         }
-
-        if(curr->parent == nullptr){
-            root = successor;
-        }
-
-        else if(curr->parent->left == curr){
-            curr->parent->left = successor;
-        }
-        
-        else {
-            curr->parent->right = successor;
-        }
-
         delete curr;
         return;
     }
-
-    Node* child = (curr->left) ? curr->left : curr->right;
-
-    if(child != nullptr){
-        child->parent = curr->parent;
+    else if(!(curr->left) || !(curr->right)){
+        if(!(curr->left)){
+            Node* del = curr;
+            if(curr -> parent){
+                if(curr -> parent -> left == curr){
+                    curr -> parent -> left = curr -> right;
+                    curr -> right -> parent = curr -> parent;
+                } else {
+                    curr -> parent -> right = curr -> right;
+                    curr -> right -> parent = curr -> parent;
+                }
+            }
+            if(curr == root){
+                root = curr -> right;
+                root -> parent = nullptr;
+            }
+            delete curr;
+            return;
+        } 
+        else if (!(curr->right)){
+            Node* del = curr;
+            if(curr -> parent){
+                if(curr -> parent -> left == curr){
+                    curr -> parent -> left = curr -> left;
+                    curr -> left -> parent = curr -> parent;
+                } else {
+                    curr -> parent -> right = curr -> left;
+                    curr -> left -> parent = curr -> parent;
+                }
+            }
+            if(curr == root){
+                root = curr -> left;
+                root -> parent = nullptr;
+            }
+            delete curr;
+            return;
+        }
     }
-
-    if(curr->parent == nullptr){
-        root = child;
-    }
-    else if(curr->parent->left == curr){
-        curr->parent->left = child;
-    }
-    else {
-        curr->parent->right = child;
-    }
-
-    delete curr;
 }
 
 void card_list::insert(card ins_card){

@@ -3,8 +3,8 @@ CXXFLAGS = -g --std=c++20 -Wall
 
 all: game game_set
 
-game_set: card.o main_set.o
-	${CXX} ${CXXFLAGS} card.o main_set.o -o game_set
+game_set: card.o card_list.o main_set.o
+	${CXX} ${CXXFLAGS} card.o card_list.o main_set.o -o game_set
 
 game: card.o card_list.o main.o
 	${CXX} ${CXXFLAGS} card.o card_list.o main.o -o game

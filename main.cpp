@@ -1,8 +1,10 @@
+// This file should implement the game using a custom implementation of a BST (based on your earlier BST implementation)
 #include <iostream>
 #include <fstream>
 #include <string>
 #include "card.h"
 #include "card_list.h"
+//Do not include set in this file
 
 using namespace std;
 
@@ -14,8 +16,6 @@ int main(int argv, char** argc){
   
   ifstream cardFile1 (argc[1]);
   ifstream cardFile2 (argc[2]);
-  card_list list1(nullptr);
-  card_list list2(nullptr);
   string line;
 
   if (cardFile1.fail() || cardFile2.fail() ){
@@ -23,61 +23,18 @@ int main(int argv, char** argc){
     return 1;
   }
 
+  //Read each file
   while (getline (cardFile1, line) && (line.length() > 0)){
-    list1.insert(card(line.substr(0,1), line.substr(2,2)));
+
   }
   cardFile1.close();
 
+
   while (getline (cardFile2, line) && (line.length() > 0)){
-    list2.insert(card(line.substr(0,1), line.substr(2,2)));
+
   }
   cardFile2.close();
-
-  bool alice_turn = true;
-  bool game_over = false;
-
-  while(!game_over){
-    if(alice_turn){
-      bool found = false;
-      for(auto it = list1.begin(); it != list1.end(); ++it){
-        if(list2.contains(*it)){
-          cout << "Alice picked matching card " << *it << endl;
-          card temp = *it;
-          list1.remove(temp);
-          list2.remove(temp);
-          found = true;
-          break;
-        }
-      }
-      if(!found) game_over = true;
-      alice_turn = false;
-    } else {
-      bool found = false;
-      for(auto it = list2.rbegin(); it != list2.rend(); --it){
-        if(list1.contains(*it)){
-          cout << "Bob picked matching card " << *it << endl;
-          card temp = *it;
-          list1.remove(temp);
-          list2.remove(temp);
-          found = true;
-          break;
-        }
-      }
-      if(!found) game_over = true;
-      alice_turn = true;
-    }
-  }
-
-  cout << endl;
-  cout << "Alice's cards:" << endl;
-  for(auto it = list1.begin(); it != list1.end(); ++it){
-    cout << *it << endl;
-  }
-  cout << endl;
-  cout << "Bob's cards:" << endl;
-  for(auto it = list2.begin(); it != list2.end(); ++it){
-    cout << *it << endl;
-  }
-
+  
+  
   return 0;
 }

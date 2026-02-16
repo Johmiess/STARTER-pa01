@@ -1,7 +1,8 @@
 // card.cpp
 // Author: John Yang
 // Implementation of the classes defined in card.h
-#include "card.h" // <--- Crucial!
+#include "card.h" 
+
 using namespace std; 
 const string suitO[] = {"c","d","s","h"};
 const string rankO[] = {"a", "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k"};
