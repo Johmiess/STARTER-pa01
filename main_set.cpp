@@ -51,7 +51,7 @@ int main(int argv, char** argc){
 
     bob_match = false;
 
-     for(auto it = list2.rbegin(); it != list2.rend(); ++it){
+     for(auto it = list2.rbegin(); it != list2.rend(); --it){
       if(list1.contains(*it)){
         card c = *it;
         cout << "Bob picked matching card " << c << endl;
