@@ -62,7 +62,7 @@ bool card::operator>(const card& other) const{
             this_s_index = i;
         }
     }
-    for(int i = 0; i < sizeof(rankO) / sizeof(rank[0]); i++){
+    for(int i = 0; i < sizeof(rankO) / sizeof(rankO[0]); i++){
           if(rankO[i] == other.rank){
             other_index = i;
         }
