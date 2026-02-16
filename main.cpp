@@ -33,47 +33,47 @@ int main(int argv, char** argc){
   }
   cardFile2.close();
 
-  auto it1 = list1.begin();
-  auto it2 = list2.rbegin();
-  int size1 = 0, size2 = 0;
-  for(auto it = list1.begin(); it != list1.end(); ++it) size1++;
-  for(auto it = list2.begin(); it != list2.end(); ++it) size2++;
+  bool alice_turn = true;
+  bool game_over = false;
 
-  for(int i = 0; i < size1 + size2; i++){
-    if(it1 == list1.end()){
-      break;
-    }
-    if(it2 == list2.rend()){
-      break;
-    }
-    if(i % 2 == 0){
-      if(list2.contains(*it1)){
-        cout << "Alice picked matching card " << *it1 << endl;
-        card temp = *it1;
-        ++it1;
-        list1.remove(temp);
-        list2.remove(temp);
-      } else {
-        ++it1;
+  while(!game_over){
+    if(alice_turn){
+      bool found = false;
+      for(auto it = list1.begin(); it != list1.end(); ++it){
+        if(list2.contains(*it)){
+          cout << "Alice picked matching card " << *it << endl;
+          card temp = *it;
+          list1.remove(temp);
+          list2.remove(temp);
+          found = true;
+          break;
+        }
       }
-    }
-    if(i % 2 != 0){
-      if(list1.contains(*it2)){
-        cout << "Bob picked matching card " << *it2 << endl;
-        card temp = *it2;
-        --it2;
-        list1.remove(temp);
-        list2.remove(temp);
-      } else {
-        --it2;
+      if(!found) game_over = true;
+      alice_turn = false;
+    } else {
+      bool found = false;
+      for(auto it = list2.rbegin(); it != list2.rend(); --it){
+        if(list1.contains(*it)){
+          cout << "Bob picked matching card " << *it << endl;
+          card temp = *it;
+          list1.remove(temp);
+          list2.remove(temp);
+          found = true;
+          break;
+        }
       }
+      if(!found) game_over = true;
+      alice_turn = true;
     }
   }
 
+  cout << endl;
   cout << "Alice's cards:" << endl;
   for(auto it = list1.begin(); it != list1.end(); ++it){
     cout << *it << endl;
   }
+  cout << endl;
   cout << "Bob's cards:" << endl;
   for(auto it = list2.begin(); it != list2.end(); ++it){
     cout << *it << endl;
