@@ -139,6 +139,7 @@ void card_list::remove(card rem_card){
             successor->left = curr->left;
             successor->right = curr->right;
             successor->parent = curr->parent;
+
             curr->left->parent = successor;
             curr->right->parent = successor;
         }
@@ -146,9 +147,11 @@ void card_list::remove(card rem_card){
         if(curr->parent == nullptr){
             root = successor;
         }
+
         else if(curr->parent->left == curr){
             curr->parent->left = successor;
         }
+        
         else {
             curr->parent->right = successor;
         }
