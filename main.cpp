@@ -68,10 +68,14 @@ int main(int argv, char** argc){
     }
   }
 
+
+  cout << endl;
   cout << "Alice's cards:" << endl;
   for(auto it = list1.begin(); it != list1.end(); ++it){
     cout << *it << endl;
   }
+
+  cout << endl;
   cout << "Bob's cards:" << endl;
   for(auto it = list2.begin(); it != list2.end(); ++it){
     cout << *it << endl;
