@@ -128,11 +128,14 @@ void card_list::remove(card rem_card){
             successor->left = curr->left;
             curr->left->parent = successor;
             successor->parent = curr->parent;
+
         } else {
             successor->parent->left = successor->right;
+            
             if(successor->right){
                 successor->right->parent = successor->parent;
             }
+            
             successor->left = curr->left;
             successor->right = curr->right;
             successor->parent = curr->parent;
